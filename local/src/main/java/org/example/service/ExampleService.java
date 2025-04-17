@@ -3,7 +3,6 @@ package org.example.service;
 import org.springframework.kafka.core.KafkaTemplate;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 public class ExampleService {
 
