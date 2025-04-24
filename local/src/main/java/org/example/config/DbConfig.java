@@ -3,6 +3,7 @@ package org.example.config;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 @Configuration
@@ -19,10 +20,15 @@ public class DbConfig {
     }
 
     @Bean
-    public DataSourceTransactionManager txManager() {
+    public DataSourceTransactionManager txManager(BasicDataSource dataSource) {
         DataSourceTransactionManager manager = new DataSourceTransactionManager();
-        manager.setDataSource(dataSource());
+        manager.setDataSource(dataSource);
         return manager;
+    }
+
+    @Bean
+    public JdbcTemplate jdbcTemplate(BasicDataSource dataSource) {
+        return new JdbcTemplate(dataSource);
     }
 
 }
