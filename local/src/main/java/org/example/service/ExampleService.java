@@ -2,10 +2,9 @@ package org.example.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 public class ExampleService {
@@ -16,7 +15,7 @@ public class ExampleService {
     public static final String SELECT = "SELECT ";
 
     @Autowired
-    KafkaTemplate<Integer, String> kafkaTemplate;
+    JmsTemplate jmsTemplate;
 
     @Autowired
     JdbcTemplate jdbcTemplate;
@@ -29,8 +28,7 @@ public class ExampleService {
     @Transactional
     public void insertAndSend(int val) {
         jdbcTemplate.update(INSERT_INTO + TABLE_NAME + "(" + COLUMN_NAME +") values(" + val + ")");
-        kafkaTemplate.send("test", "test " + LocalDateTime.now());
-
+        jmsTemplate.convertAndSend("topic", "aloha");
         if (true) throw new RuntimeException("Oops!");
     }
 

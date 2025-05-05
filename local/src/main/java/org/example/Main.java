@@ -1,27 +1,24 @@
 package org.example;
 
 import org.example.service.ExampleService;
+import org.example.service.JmsTopicListener;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.kafka.annotation.EnableKafka;
-import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.kafka.core.*;
+import org.springframework.jms.annotation.EnableJms;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import java.time.LocalDateTime;
-
-@EnableKafka
+@EnableJms
 @Configuration
 @ComponentScan
 @EnableTransactionManagement
 public class Main {
     public static void main(String[] args) {
-        ApplicationContext context = new AnnotationConfigApplicationContext(Main.class);
+        var context = new AnnotationConfigApplicationContext(Main.class);
 
-        ExampleService service = context.getBean(ExampleService.class);
+        var service = context.getBean(ExampleService.class);
         service.createTable();
         System.out.println(service.readFromTable());
         try {
@@ -31,13 +28,13 @@ public class Main {
         }
     }
 
-    @KafkaListener(topics = "test")
-    public void receive(String message) {
-        System.out.println(LocalDateTime.now() + " Received: " + message);
+    @Bean
+    public JmsTopicListener jmsTopicListener() {
+        return new JmsTopicListener();
     }
 
     @Bean
-    public ExampleService exampleService(final KafkaTemplate<Integer, String> kafkaTemplate) {
+    public ExampleService exampleService() {
         return new ExampleService();
     }
 }
