@@ -19,6 +19,8 @@ public class Main {
     public static void main(String[] args) {
         var context = new AnnotationConfigApplicationContext(Main.class);
 
+        System.out.println("###");
+
         AtomicBoolean receivedMessage = new AtomicBoolean(false);
         var jms = context.getBean(JmsTopicListener.class);
         jms.addCallback(() -> receivedMessage.set(true));
@@ -32,6 +34,8 @@ public class Main {
         } finally {
             System.out.println(service.readFromTable());
             System.out.println("Send aborted: " + (!receivedMessage.get()));
+
+            System.out.println("###");
         }
     }
 
