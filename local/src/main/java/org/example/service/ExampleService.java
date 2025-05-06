@@ -26,10 +26,10 @@ public class ExampleService {
     }
 
     @Transactional
-    public void insertAndSend(int val) {
+    public void insertAndSend(int val, boolean rollback) {
         jdbcTemplate.update(INSERT_INTO + TABLE_NAME + "(" + COLUMN_NAME +") values(" + val + ")");
         jmsTemplate.convertAndSend("topic", "aloha");
-        if (true) throw new RuntimeException("Oops!");
+        if (rollback) throw new RuntimeException("Oops!");
     }
 
     @Transactional
