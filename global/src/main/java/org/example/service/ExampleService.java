@@ -5,6 +5,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.transaction.UserTransaction;
 import java.util.List;
 
 public class ExampleService {
@@ -20,7 +21,6 @@ public class ExampleService {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
-    @Transactional
     public void createTable() {
         jdbcTemplate.execute(CREATE_TABLE_IF_NOT_EXISTS + TABLE_NAME + "("  + COLUMN_NAME + " int)");
     }
@@ -32,7 +32,6 @@ public class ExampleService {
         if (rollback) throw new RuntimeException("Oops!");
     }
 
-    @Transactional
     public List<Integer> readFromTable() {
         List<Integer> result = jdbcTemplate.queryForList(SELECT + COLUMN_NAME + " from " + TABLE_NAME, Integer.class);
         return result;

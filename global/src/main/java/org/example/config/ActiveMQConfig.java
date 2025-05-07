@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 import org.springframework.jms.core.JmsTemplate;
+import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
 public class ActiveMQConfig {
@@ -33,10 +34,11 @@ public class ActiveMQConfig {
     }
 
     @Bean
-    public DefaultJmsListenerContainerFactory jmsListenerContainerFactory() throws JMSException {
+    public DefaultJmsListenerContainerFactory jmsListenerContainerFactory(PlatformTransactionManager platformTransactionManager) throws JMSException {
         var factory = new DefaultJmsListenerContainerFactory();
         factory.setConnectionFactory(connectionFactory());
         factory.setPubSubDomain(true);
+        factory.setTransactionManager(platformTransactionManager);
         return factory;
     }
 
