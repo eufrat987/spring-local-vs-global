@@ -20,10 +20,6 @@ public class Main {
     public static void main(String[] args) {
         var context = new AnnotationConfigApplicationContext(Main.class);
 
-        AtomicBoolean receivedMessage = new AtomicBoolean(false);
-        var jms = context.getBean(JmsTopicListener.class);
-        jms.addCallback(() -> receivedMessage.set(true));
-
         var service = context.getBean(ExampleService.class);
         service.createTable();
         System.out.println(service.readFromTable());
@@ -32,7 +28,6 @@ public class Main {
             service.insertAndSend(1, true);
         } finally {
             System.out.println(service.readFromTable());
-            System.out.println("Send aborted: " + (!receivedMessage.get()));
         }
     }
 

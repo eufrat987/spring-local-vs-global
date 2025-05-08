@@ -1,11 +1,12 @@
 package org.example.service;
 
+import org.apache.activemq.command.ActiveMQTextMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.UserTransaction;
+import javax.jms.MessageNotWriteableException;
 import java.util.List;
 
 public class ExampleService {

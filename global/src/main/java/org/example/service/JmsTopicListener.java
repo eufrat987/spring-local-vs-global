@@ -11,25 +11,17 @@ import javax.transaction.UserTransaction;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JmsTopicListener implements MessageListener {
+public class JmsTopicListener {
 
-    private List<Runnable> callbacks = new ArrayList<>();
 
-    @Override
     @Transactional
     @JmsListener(destination = "topic")
-    public void onMessage(Message message) {
+    public void onMessage(String message) {
         try {
-            var msg = (ActiveMQTextMessage) message;
-            System.out.println("### Received: " + msg.getText());
-            callbacks.forEach(Runnable::run);
+            System.out.println("### Received: " + message);
         } catch (Exception e) {
             System.out.println("Jms Consumer Error " + e);
         }
-    }
-
-    public void addCallback(Runnable callback) {
-        callbacks.add(callback);
     }
 
 }
